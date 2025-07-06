@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SpaceGames — Независимая студия</title>
+<style>
+  /* Сброс */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  html, body {
+    height: 100%;
+    background: #000;
+    color: #eee;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  main {
+    flex-grow: 1;
+    max-width: 720px;
+    width: 90%;
+    margin: 50px auto 40px;
+    position: relative;
+    z-index: 5;
+  }
+
+  header.glow-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    max-width: 720px;
+    margin: 30px auto 10px;
+    padding: 14px 28px;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    background: rgba(15,15,15,0.8);
+    box-shadow: 0 0 18px 3px rgba(255,255,255,0.3);
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 6px;
+    user-select: none;
+  }
+  .logo-img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 0 10px 2px rgba(255,255,255,0.6);
+    user-select: none;
+  }
+
+  .about-company {
+    border-radius: 14px;
+    padding: 24px 30px;
+    background: rgba(30, 30, 30, 0.85);
+    box-shadow: 0 0 10px 2px rgba(255,255,255,0.15);
+    line-height: 1.5;
+    color: #ddd;
+    font-size: 1.1rem;
+    user-select: text;
+  }
+  .about-company strong {
+    color: #fff;
+  }
+
+  .game-card {
+    border-radius: 14px;
+    padding: 28px 36px;
+    text-align: center;
+    cursor: default;
+    user-select: none;
+    background: rgba(15,15,15,0.8);
+    border: 2px solid #eee;
+    box-shadow: 0 0 14px 3px rgba(255,255,255,0.2);
+    margin-top: 28px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .game-card:hover {
+    background-color: #222;
+    box-shadow: 0 0 20px 5px rgba(255,255,255,0.35);
+  }
+  .game-card h2 {
+    font-size: 2.4rem;
+    margin-bottom: 16px;
+  }
+  .game-card p {
+    font-size: 1.1rem;
+    margin-bottom: 28px;
+    color: #ccc;
+  }
+  .game-card button {
+    font-size: 1.1rem;
+    padding: 12px 32px;
+    border: 2px solid #eee;
+    border-radius: 14px;
+    background: transparent;
+    color: #eee;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .game-card button:hover {
+    background-color: #eee;
+    color: #000;
+  }
+
+  #game-detail h1 {
+    font-size: 2.8rem;
+    margin-bottom: 28px;
+    text-align: center;
+    color: #fff;
+  }
+  #game-detail .about-company-small {
+    border-radius: 14px;
+    padding: 18px 26px;
+    background: rgba(30,30,30,0.85);
+    box-shadow: 0 0 8px 1px rgba(255,255,255,0.15);
+    color: #ddd;
+    font-size: 1rem;
+    margin-bottom: 36px;
+    user-select: text;
+  }
+  #game-detail h2 {
+    font-size: 1.8rem;
+    margin-top: 36px;
+    margin-bottom: 14px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 6px;
+  }
+  #game-detail p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: #ccc;
+    user-select: text;
+  }
+  #game-detail video {
+    width: 100%;
+    margin-top: 18px;
+    border-radius: 14px;
+    background: #000;
+    outline: none;
+  }
+  #game-detail .gallery {
+    margin-top: 22px;
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+  #game-detail .gallery img {
+    height: 140px;
+    border-radius: 12px;
+    border: 2px solid #eee;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  #game-detail .gallery img:hover {
+    transform: scale(1.05);
+  }
+  #game-detail .desc-photos {
+    margin-top: 8px;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #aaa;
+    text-align: center;
+  }
+
+  #news h1 {
+    font-size: 2.5rem;
+    margin-bottom: 26px;
+    text-align: center;
+    color: #fff;
+  }
+  #news ul {
+    list-style: none;
+    color: #bbb;
+    padding-left: 16px;
+  }
+  #news ul li {
+    padding: 10px 0;
+    border-left: 4px solid #eee;
+    margin-bottom: 12px;
+    font-weight: 600;
+    cursor: default;
+  }
+
+  .btn-back {
+    display: inline-block;
+    margin-bottom: 32px;
+    padding: 12px 26px;
+    border-radius: 14px;
+    border: 2px solid #eee;
+    background: transparent;
+    color: #eee;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    user-select: none;
+  }
+  .btn-back:hover {
+    background-color: #eee;
+    color: #000;
+  }
+
+  button:focus {
+    outline: none;
+  }
+
+  footer.footer-glow {
+    max-width: 720px;
+    margin: 0 auto 30px;
+    padding: 12px 24px;
+    border: 2px solid #eee;
+    border-radius: 14px;
+    background: rgba(15,15,15,0.85);
+    box-shadow: 0 0 14px 2px rgba(255,255,255,0.25);
+    color: #eee;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    user-select: none;
+    gap: 10px;
+  }
+
+  footer .rights-box {
+    border: 1px solid #eee;
+    padding: 6px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  footer .support-buttons {
+    display: flex;
+    gap: 14px;
+  }
+
+  footer .btn-footer {
+    display: inline-block;
+    padding: 8px 20px;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    background: transparent;
+    color: #eee;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.25s ease, color 0.25s ease;
+    user-select: none;
+  }
+  footer .btn-footer:hover,
+  footer .btn-footer:focus {
+    background-color: #eee;
+    color: #000;
+    outline: none;
+  }
+
+  /* Политика и копирайт */
+  #rights-page {
+    max-width: 720px;
+    margin: 50px auto 60px;
+    padding: 24px 30px;
+    background: rgba(15,15,15,0.9);
+    border: 2px solid #eee;
+    border-radius: 14px;
+    box-shadow: 0 0 18px 3px rgba(255,255,255,0.3);
+    color: #eee;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  #rights-page h1 {
+    font-size: 2.4rem;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  #rights-page h2 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 6px;
+  }
+  #rights-page p, #rights-page ul {
+    margin-bottom: 16px;
+  }
+  #rights-page ul {
+    list-style: disc inside;
+  }
+  #rights-page a.btn-back {
+    display: inline-block;
+    margin: 30px 0 0 0;
+    padding: 12px 26px;
+    border-radius: 14px;
+    border: 2px solid #eee;
+    background: transparent;
+    color: #eee;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    user-select: none;
+    text-decoration: none;
+  }
+  #rights-page a.btn-back:hover {
+    background-color: #eee;
+    color: #000;
+  }
+
+  /* Адаптив */
+  @media (max-width: 600px) {
+    header.glow-box {
+      font-size: 1.6rem;
+      padding: 12px 20px;
+      gap: 10px;
+      max-width: 95%;
+      margin: 20px auto 10px;
+    }
+    main {
+      width: 95%;
+      margin: 20px auto 40px;
+    }
+    .game-card {
+      padding: 20px 24px;
+    }
+    #game-detail h1 {
+      font-size: 2rem;
+    }
+    .logo-img {
+      width: 36px;
+      height: 36px;
+    }
+    footer.footer-glow {
+      flex-direction: column;
+      gap: 12px;
+      font-size: 0.9rem;
+    }
+    footer .rights-box {
+      white-space: normal;
+      text-align: center;
+      width: 100%;
+    }
+    footer .support-buttons {
+      justify-content: center;
+      width: 100%;
+    }
+    #rights-page {
+      width: 95%;
+      margin: 20px auto 60px;
+      font-size: 0.95rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="glow-box" role="banner" aria-label="SpaceGames">
+  <img src="logo.png" alt="Логотип SpaceGames" class="logo-img" />
+  SpaceGames
+</header>
+
+<main role="main">
+    <section id="home" class="active" tabindex="0" aria-label="Главная страница студии">
+    <div class="about-company glow-box" tabindex="0">
+      <strong>SpaceGames</strong> — независимая студия разработчиков игр, создающая уникальные проекты с акцентом на глубокий сюжет и атмосферу. Мы стремимся создавать миры, в которые хочется погружаться снова и снова, соединяя современную графику и оригинальные игровые механики.
+    </div>
+
+    <div class="game-card" aria-label="Карточка игры SplitSoul" tabindex="0">
+      <h2>SplitSoul</h2>
+      <p>Космическая RPG с уникальной механикой раздвоения личности и мрачным сюжетом.</p>
+      <button id="btn-details" aria-label="Подробнее об игре SplitSoul">Подробнее</button>
+    </div>
+  </section>
+
+  <section id="game-detail" tabindex="0" aria-label="Подробная информация об игре SplitSoul" hidden>
+    <button class="btn-back" id="btn-back-to-home" aria-label="Вернуться на главную">⬅ Назад</button>
+
+    <div class="about-company-small glow-box" tabindex="0" aria-label="О компании SpaceGames">
+      <strong>SpaceGames</strong> — студия с многолетним опытом, создающая игры с атмосферой и душой. Мы гордимся каждым проектом и всегда открыты к обратной связи.
+    </div>
+
+    <h1>SplitSoul</h1>
+
+    <h2>Сюжет</h2>
+    <p>В далеком космосе главный герой сталкивается с раздвоением личности, которое влияет на его реальность и выборы. Каждое действие меняет ход истории и судьбу целой планеты.</p>
+
+    <h2>Трейлер</h2>
+    <video controls preload="metadata" aria-label="Трейлер игры SplitSoul">
+      <source src="trailer-splitsoul.mp4" type="video/mp4" />
+      Ваш браузер не поддерживает видео тег.
+    </video>
+
+    <h2>Фотогалерея</h2>
+    <div class="gallery" aria-label="Фотогалерея SplitSoul">
+      <img src="split1.jpg" alt="Скриншот 1 SplitSoul" />
+      <img src="split2.jpg" alt="Скриншот 2 SplitSoul" />
+      <img src="split3.jpg" alt="Скриншот 3 SplitSoul" />
+      <img src="split4.jpg" alt="Скриншот 4 SplitSoul" />
+    </div>
+    <p class="desc-photos">На фото: ключевые моменты игры, разные локации и персонажи.</p>
+
+    <h2>Новости</h2>
+    <button id="btn-news" class="btn-back" aria-label="Перейти к новостям">Подробнее о новостях</button>
+  </section>
+
+  <section id="news" tabindex="0" aria-label="Новости игры" hidden>
+    <button class="btn-back" id="btn-back-to-detail" aria-label="Вернуться к информации об игре">⬅ Назад</button>
+    <h1>Новости SplitSoul</h1>
+    <ul aria-label="Список новостей">
+      <li>🆕 Новый трейлер SplitSoul вышел</li>
+<li>⚙️ Обновление баланса и багфиксы</li>
+      <li>📅 Дата релиза объявлена</li>
+    </ul>
+  </section>
+
+  <section id="rights-page" tabindex="0" aria-label="Политика конфиденциальности и уведомление об авторских правах" hidden>
+    <a href="#" class="btn-back" id="btn-back-from-rights" aria-label="Вернуться на главную">⬅ Назад</a>                                        
+    <h1>Политика конфиденциальности</h1>
+
+    <p><strong>Последнее обновление: 01 июля 2025</strong></p>
+
+    <h2>1. Введение</h2>
+    <p><strong>SpaceGames</strong> («мы», «наш», «нас») уважает вашу конфиденциальность. Эта политика объясняет, как мы собираем, используем и защищаем ваши данные при использовании наших игр, веб-сайтов и сервисов.</p>
+
+    <h2>2. Какие данные мы собираем?</h2>
+    <ul>
+      <li><strong>Персональные данные</strong>: имя, email, дата рождения (если требуется для возрастных ограничений).</li>
+      <li><strong>Игровые данные</strong>: прогресс, достижения, внутриигровые покупки.</li>
+      <li><strong>Технические данные</strong>: IP-адрес, тип устройства, операционная система, данные аналитики.</li>
+      <li><strong>Данные платежей</strong>: информация о транзакциях через платёжные системы.</li>
+    </ul>
+
+    <h2>3. Как мы используем ваши данные?</h2>
+    <ul>
+      <li>Для предоставления и улучшения наших игр и сервисов.</li>
+      <li>Для обработки платежей и предотвращения мошенничества.</li>
+      <li>Для связи с вами (техподдержка, обновления, маркетинг, если вы дали согласие).</li>
+      <li>Для аналитики и персонализации игрового опыта.</li>
+    </ul>
+
+    <h2>4. Обмен данными с третьими лицами</h2>
+    <p>Мы не продаем ваши данные, но можем передавать их партнёрам и по требованию закона.</p>
+
+    <h2>5. Ваши права</h2>
+    <ul>
+      <li>Запросить доступ, исправление или удаление ваших данных.</li>
+      <li>Отказаться от маркетинговых рассылок.</li>
+      <li>Отозвать согласие на обработку данных (но это может ограничить функционал игры).</li>
+    </ul>
+
+    <h2>6. Защита данных</h2>
+    <p>Мы используем шифрование (SSL), безопасные серверы и строгие политики доступа.</p>
+
+    <h2>7. Изменения в политике</h2>
+    <p>Мы можем обновлять эту политику. Изменения вступают в силу после публикации на нашем сайте.</p>
+
+    <h2>8. Контакты</h2>
+    <p>По вопросам конфиденциальности пишите на: <a href="mailto:privacy@spacegames.com" style="color:#eee; text-decoration: underline;">privacy@spacegames.com</a> или по адресу: г. Москва, ул. Космическая, 42.</p>
+
+    <hr style="border-color:#eee; margin: 20px 0;">
+
+    <h1>Авторские права (Copyright Notice)</h1>
+
+    <p>© 2025 SpaceGames. Все права защищены.</p>
+
+    <p>Все материалы, включая:</p>
+    <ul>
+      <li>Код игры, дизайн, графику, анимацию;</li>
+      <li>Аудио, музыку, звуковые эффекты;</li>
+      <li>Тексты, сюжеты, персонажей;</li>
+    </ul>
+
+    <p>являются интеллектуальной собственностью SpaceGames или лицензированы для нас.</p>
+
+    <p><strong>Запрещено:</strong></p>
+    <ul>
+      <li>Копировать, распространять или модифицировать наши игры без разрешения;</li>
+      <li>Использовать наши материалы в коммерческих целях;</li>
+      <li>Создавать фанатские игры на основе нашего IP без лицензии.</li>
+    </ul>
+
+    <p><strong>Исключения:</strong></p>
+    <ul>
+      <li>Допускается цитирование с указанием авторства (для обзоров, новостей);</li>
+      <li>Моды/фанарт — только с разрешения и без монетизации.</li>
+    </ul>
+
+    <p>По вопросам лицензирования обращайтесь: <a href="mailto:license@spacegames.com" style="color:#eee; text-decoration: underline;">license@spacegames.com</a>.</p>
+  </section>
+
+</main>
+
+<footer class="footer-glow" role="contentinfo">
+  <div class="rights-box" tabindex="0" role="button" aria-pressed="false" id="rights-link">
+    © 2025 SpaceGames. Все права защищены.
+  </div>
+  <div class="support-buttons">
+    <a href="https://boosty.to/spacegamessg" target="_blank" rel="noopener noreferrer" class="btn-footer" aria-label="Поддержать на Boosty">Поддержать на Boosty 🚀</a>
+    <a href="https://t.me/SspaceGames" target="_blank" rel="noopener noreferrer" class="btn-footer" aria-label="Перейти в Telegram канал">Наш Telegram 📲</a>
+  </div>
+</footer>
+
+<script>
+  // Получаем элементы секций
+  const home = document.getElementById('home');
+  const gameDetail = document.getElementById('game-detail');
+  const news = document.getElementById('news');
+  const rightsPage = document.getElementById('rights-page');
+
+  // Кнопки
+  const btnDetails = document.getElementById('btn-details');
+  const btnBackToHome = document.getElementById('btn-back-to-home');
+  const btnNews = document.getElementById('btn-news');
+  const btnBackToDetail = document.getElementById('btn-back-to-detail');
+  const rightsLink = document.getElementById('rights-link');
+  const btnBackFromRights = document.getElementById('btn-back-from-rights');
+
+  // Показать подробную информацию об игре
+  btnDetails.addEventListener('click', () => {
+    home.hidden = true;
+    gameDetail.hidden = false;
+    news.hidden = true;
+    rightsPage.hidden = true;
+    gameDetail.focus();
+  });
+
+  // Вернуться с подробной информации на главную
+  btnBackToHome.addEventListener('click', () => {
+    home.hidden = false;
+    gameDetail.hidden = true;
+    news.hidden = true;
+    rightsPage.hidden = true;
+    home.focus();
+  });
+
+  // Показать новости из подробной информации
+  btnNews.addEventListener('click', () => {
+    home.hidden = true;
+    gameDetail.hidden = true;
+    news.hidden = false;
+    rightsPage.hidden = true;
+    news.focus();
+  });
+
+  // Вернуться с новостей к подробной информации
+  btnBackToDetail.addEventListener('click', () => {
+    home.hidden = true;
+    gameDetail.hidden = false;
+    news.hidden = true;
+    rightsPage.hidden = true;
+    gameDetail.focus();
+  });
+
+  // Показать страницу прав (политики)
+  rightsLink.addEventListener('click', () => {
+    home.hidden = true;
+    gameDetail.hidden = true;
+    news.hidden = true;
+    rightsPage.hidden = false;
+    rightsLink.setAttribute('aria-pressed', 'true');
+    rightsPage.focus();
+  });
+
+  // Вернуться со страницы прав на главную
+  btnBackFromRights.addEventListener('click', (e) => {
+    e.preventDefault();
+    rightsPage.hidden = true;
+    home.hidden = false;
+    gameDetail.hidden = true;
+    news.hidden = true;
+    rightsLink.setAttribute('aria-pressed', 'false');
+    home.focus();
+  });
+</script>
+
+</body>
+</html>
