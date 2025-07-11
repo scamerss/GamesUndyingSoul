@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SpaceGames — Независимая студия</title>
+<title>UndyingSoul — Независимая студия</title>
 <style>
   /* Сброс */
   * {
@@ -11,14 +11,32 @@
   }
   html, body {
     height: 100%;
-    background: #000;
-    color: #eee;
+    background: var(--bg-color, #000);
+    color: var(--text-color, #eee);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     position: relative;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  /* Тема: светлая */
+  body.light {
+    --bg-color: #fff;
+    --text-color: #111;
+    --bg-box: rgba(230,230,230,0.9);
+    --border-color: #333;
+    --box-shadow-color: rgba(0,0,0,0.1);
+  }
+  /* Тема: тёмная (по умолчанию) */
+  body.dark {
+    --bg-color: #000;
+    --text-color: #eee;
+    --bg-box: rgba(30,30,30,0.85);
+    --border-color: #eee;
+    --box-shadow-color: rgba(255,255,255,0.15);
   }
 
   main {
@@ -29,7 +47,6 @@
     position: relative;
     z-index: 5;
   }
-
   header.glow-box {
     display: flex;
     align-items: center;
@@ -38,11 +55,11 @@
     max-width: 720px;
     margin: 30px auto 10px;
     padding: 14px 28px;
-    border: 2px solid #eee;
+    border: 2px solid var(--border-color);
     border-radius: 12px;
-    background: rgba(15,15,15,0.8);
-    box-shadow: 0 0 18px 3px rgba(255,255,255,0.3);
-    color: #fff;
+    background: var(--bg-box, rgba(15,15,15,0.8));
+    box-shadow: 0 0 18px 3px var(--box-shadow-color);
+    color: var(--text-color);
     font-size: 2rem;
     font-weight: 900;
     letter-spacing: 6px;
@@ -53,22 +70,27 @@
     height: 50px;
     object-fit: contain;
     border-radius: 12px;
-    box-shadow: 0 0 10px 2px rgba(255,255,255,0.6);
+    box-shadow: 0 0 10px 2px var(--box-shadow-color);
     user-select: none;
   }
 
-  .about-company {
+  .about-company, .about-company-small {
     border-radius: 14px;
     padding: 24px 30px;
-    background: rgba(30, 30, 30, 0.85);
-    box-shadow: 0 0 10px 2px rgba(255,255,255,0.15);
+    background: var(--bg-box);
+    box-shadow: 0 0 10px 2px var(--box-shadow-color);
     line-height: 1.5;
-    color: #ddd;
+    color: var(--text-color);
     font-size: 1.1rem;
     user-select: text;
   }
+  .about-company-small {
+    padding: 18px 26px;
+    font-size: 1rem;
+    margin-bottom: 36px;
+  }
   .about-company strong {
-    color: #fff;
+    color: var(--text-color);
   }
 
   .game-card {
@@ -77,74 +99,77 @@
     text-align: center;
     cursor: default;
     user-select: none;
-    background: rgba(15,15,15,0.8);
-    border: 2px solid #eee;
-    box-shadow: 0 0 14px 3px rgba(255,255,255,0.2);
+    background: var(--bg-box);
+    border: 2px solid var(--border-color);
+    box-shadow: 0 0 14px 3px var(--box-shadow-color);
     margin-top: 28px;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
   }
   .game-card:hover {
-    background-color: #222;
-    box-shadow: 0 0 20px 5px rgba(255,255,255,0.35);
+    background-color: var(--hover-bg, #222);
+    box-shadow: 0 0 20px 5px var(--hover-shadow, rgba(255,255,255,0.35));
   }
+  body.light .game-card:hover {
+    --hover-bg: #ddd;
+    --hover-shadow: rgba(0,0,0,0.3);
+  }
+  body.dark .game-card:hover {
+    --hover-bg: #222;
+    --hover-shadow: rgba(255,255,255,0.35);
+  }
+
   .game-card h2 {
     font-size: 2.4rem;
     margin-bottom: 16px;
+    color: var(--text-color);
   }
   .game-card p {
     font-size: 1.1rem;
     margin-bottom: 28px;
-    color: #ccc;
+    color: var(--text-color);
+    opacity: 0.8;
   }
   .game-card button {
     font-size: 1.1rem;
     padding: 12px 32px;
-    border: 2px solid #eee;
+    border: 2px solid var(--border-color);
     border-radius: 14px;
     background: transparent;
-    color: #eee;
+    color: var(--text-color);
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
   .game-card button:hover {
-    background-color: #eee;
-    color: #000;
+    background-color: var(--text-color);
+    color: var(--bg-color);
   }
 
-  #game-detail h1 {
+#game-detail h1 {
     font-size: 2.8rem;
     margin-bottom: 28px;
     text-align: center;
-    color: #fff;
-  }
-  #game-detail .about-company-small {
-    border-radius: 14px;
-    padding: 18px 26px;
-    background: rgba(30,30,30,0.85);
-    box-shadow: 0 0 8px 1px rgba(255,255,255,0.15);
-    color: #ddd;
-    font-size: 1rem;
-    margin-bottom: 36px;
-    user-select: text;
+    color: var(--text-color);
   }
   #game-detail h2 {
     font-size: 1.8rem;
     margin-top: 36px;
     margin-bottom: 14px;
-    border-bottom: 2px solid #eee;
+    border-bottom: 2px solid var(--border-color);
     padding-bottom: 6px;
+    color: var(--text-color);
   }
   #game-detail p {
     font-size: 1.1rem;
     line-height: 1.5;
-    color: #ccc;
+    color: var(--text-color);
+    opacity: 0.8;
     user-select: text;
   }
   #game-detail video {
     width: 100%;
     margin-top: 18px;
     border-radius: 14px;
-    background: #000;
+    background: var(--bg-color);
     outline: none;
   }
   #game-detail .gallery {
@@ -157,7 +182,7 @@
   #game-detail .gallery img {
     height: 140px;
     border-radius: 12px;
-    border: 2px solid #eee;
+    border: 2px solid var(--border-color);
     cursor: pointer;
     transition: transform 0.3s ease;
   }
@@ -176,16 +201,17 @@
     font-size: 2.5rem;
     margin-bottom: 26px;
     text-align: center;
-    color: #fff;
+    color: var(--text-color);
   }
   #news ul {
     list-style: none;
-    color: #bbb;
+    color: var(--text-color);
+    opacity: 0.8;
     padding-left: 16px;
   }
   #news ul li {
     padding: 10px 0;
-    border-left: 4px solid #eee;
+    border-left: 4px solid var(--border-color);
     margin-bottom: 12px;
     font-weight: 600;
     cursor: default;
@@ -196,32 +222,32 @@
     margin-bottom: 32px;
     padding: 12px 26px;
     border-radius: 14px;
-    border: 2px solid #eee;
+    border: 2px solid var(--border-color);
     background: transparent;
-    color: #eee;
+    color: var(--text-color);
     font-weight: 700;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
     user-select: none;
   }
   .btn-back:hover {
-    background-color: #eee;
-    color: #000;
+    background-color: var(--text-color);
+    color: var(--bg-color);
   }
-
-  button:focus {
-    outline: none;
+  button:focus, .btn-back:focus, .btn-footer:focus {
+    outline: 2px solid var(--text-color);
+    outline-offset: 2px;
   }
 
   footer.footer-glow {
     max-width: 720px;
     margin: 0 auto 30px;
     padding: 12px 24px;
-    border: 2px solid #eee;
+    border: 2px solid var(--border-color);
     border-radius: 14px;
-    background: rgba(15,15,15,0.85);
-    box-shadow: 0 0 14px 2px rgba(255,255,255,0.25);
-    color: #eee;
+    background: var(--bg-box);
+    box-shadow: 0 0 14px 2px var(--box-shadow-color);
+    color: var(--text-color);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -230,27 +256,24 @@
     user-select: none;
     gap: 10px;
   }
-
   footer .rights-box {
-    border: 1px solid #eee;
+    border: 1px solid var(--border-color);
     padding: 6px 12px;
     border-radius: 8px;
     white-space: nowrap;
     cursor: pointer;
   }
-
   footer .support-buttons {
     display: flex;
     gap: 14px;
   }
-
   footer .btn-footer {
     display: inline-block;
     padding: 8px 20px;
-    border: 2px solid #eee;
+    border: 2px solid var(--border-color);
     border-radius: 12px;
     background: transparent;
-    color: #eee;
+    color: var(--text-color);
     font-weight: 600;
     text-decoration: none;
     transition: background-color 0.25s ease, color 0.25s ease;
@@ -258,21 +281,21 @@
   }
   footer .btn-footer:hover,
   footer .btn-footer:focus {
-    background-color: #eee;
-    color: #000;
+    background-color: var(--text-color);
+    color: var(--bg-color);
     outline: none;
   }
 
-  /* Политика и копирайт */
+/* Политика и копирайт */
   #rights-page {
     max-width: 720px;
     margin: 50px auto 60px;
     padding: 24px 30px;
-    background: rgba(15,15,15,0.9);
-    border: 2px solid #eee;
+    background: var(--bg-box);
+    border: 2px solid var(--border-color);
     border-radius: 14px;
-    box-shadow: 0 0 18px 3px rgba(255,255,255,0.3);
-    color: #eee;
+    box-shadow: 0 0 18px 3px var(--box-shadow-color);
+    color: var(--text-color);
     font-size: 1rem;
     line-height: 1.6;
   }
@@ -284,7 +307,7 @@
   #rights-page h2 {
     margin-top: 20px;
     margin-bottom: 10px;
-    border-bottom: 2px solid #eee;
+    border-bottom: 2px solid var(--border-color);
     padding-bottom: 6px;
   }
   #rights-page p, #rights-page ul {
@@ -298,9 +321,9 @@
     margin: 30px 0 0 0;
     padding: 12px 26px;
     border-radius: 14px;
-    border: 2px solid #eee;
+    border: 2px solid var(--border-color);
     background: transparent;
-    color: #eee;
+    color: var(--text-color);
     font-weight: 700;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
@@ -308,8 +331,8 @@
     text-decoration: none;
   }
   #rights-page a.btn-back:hover {
-    background-color: #eee;
-    color: #000;
+    background-color: var(--text-color);
+    color: var(--bg-color);
   }
 
   /* Адаптив */
@@ -355,164 +378,330 @@
       font-size: 0.95rem;
     }
   }
+
+  /* Кнопки переключения */
+  #controls {
+    max-width: 720px;
+    margin: 20px auto 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 0 10px;
+  }
+  #controls button {
+    background: var(--bg-box);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-color);
+    font-weight: 600;
+    padding: 8px 16px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  #controls button:hover, #controls button:focus {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    outline: none;
+  }
 </style>
 </head>
-<body>
+<body class="dark">
 
-<header class="glow-box" role="banner" aria-label="SpaceGames">
-  <img src="logo.png" alt="Логотип SpaceGames" class="logo-img" />
-  SpaceGames
+<header class="glow-box" role="banner" aria-label="UndyingSoul">
+  <img src="logo.png" alt="Логотип UndyingSoul" class="logo-img" />
+  <span data-lang="studio-name">UndyingSoul</span>
 </header>
 
+<div id="controls" aria-label="Настройки интерфейса">
+  <button id="toggle-theme" aria-pressed="false" aria-label="Переключить цвет темы">Light Theme</button>
+  <button id="toggle-lang" aria-pressed="false" aria-label="Переключить язык">English</button>
+</div>
+
 <main role="main">
-    <section id="home" class="active" tabindex="0" aria-label="Главная страница студии">
+  <section id="home" class="active" tabindex="0" aria-label="Главная страница студии">
     <div class="about-company glow-box" tabindex="0">
-      <strong>SpaceGames</strong> — независимая студия разработчиков игр, создающая уникальные проекты с акцентом на глубокий сюжет и атмосферу. Мы стремимся создавать миры, в которые хочется погружаться снова и снова, соединяя современную графику и оригинальные игровые механики.
+      <strong data-lang="studio-name-strong">UndyingSoul</strong> — <span data-lang="desc-ru">независимая студия разработчиков игр, создающая уникальные проекты с акцентом на глубокий сюжет и атмосферу. Мы стремимся создавать миры, в которые хочется погружаться снова и снова, соединяя современную графику и оригинальные игровые механики.</span>
+      <span data-lang="desc-en" hidden>an independent game development studio creating unique projects focused on deep story and atmosphere. We strive to create worlds you want to immerse yourself in again and again, combining modern graphics and original game mechanics.</span>
     </div>
 
-    <div class="game-card" aria-label="Карточка игры SplitSoul" tabindex="0">
-      <h2>SplitSoul</h2>
-      <p>Космическая RPG с уникальной механикой раздвоения личности и мрачным сюжетом.</p>
-      <button id="btn-details" aria-label="Подробнее об игре SplitSoul">Подробнее</button>
+<div class="game-card" aria-label="Карточка игры SplitSoul" tabindex="0">
+      <h2 data-lang="game-title">SplitSoul</h2>
+      <p>
+        <span data-lang="game-desc-ru">Космическая RPG с уникальной механикой раздвоения личности и мрачным сюжетом.</span>
+        <span data-lang="game-desc-en" hidden>A space RPG with a unique split-personality mechanic and a dark story.</span>
+      </p>
+      <button id="btn-details" aria-label="Подробнее об игре SplitSoul" data-lang="btn-details">Подробнее</button>
     </div>
   </section>
 
   <section id="game-detail" tabindex="0" aria-label="Подробная информация об игре SplitSoul" hidden>
-    <button class="btn-back" id="btn-back-to-home" aria-label="Вернуться на главную">⬅ Назад</button>
-
-    <div class="about-company-small glow-box" tabindex="0" aria-label="О компании SpaceGames">
-      <strong>SpaceGames</strong> — студия с многолетним опытом, создающая игры с атмосферой и душой. Мы гордимся каждым проектом и всегда открыты к обратной связи.
+    <button class="btn-back" id="btn-back-to-home" aria-label="Вернуться на главную" data-lang="btn-back">⬅️ Назад</button>
+    <div class="about-company-small glow-box" tabindex="0" aria-label="О компании UndyingSoul">
+      <strong data-lang="studio-name-strong2">UndyingSoul</strong> — <span data-lang="about-small-ru">студия с многолетним опытом, создающая игры с атмосферой и душой. Мы гордимся каждым проектом и всегда открыты к обратной связи.</span>
+      <span data-lang="about-small-en" hidden>a studio with many years of experience creating games with atmosphere and soul. We are proud of every project and always open to feedback.</span>
     </div>
 
-    <h1>SplitSoul</h1>
+    <h1 data-lang="game-title">SplitSoul</h1>
 
-    <h2>Сюжет</h2>
-    <p>В далеком космосе главный герой сталкивается с раздвоением личности, которое влияет на его реальность и выборы. Каждое действие меняет ход истории и судьбу целой планеты.</p>
+    <h2 data-lang="section-story">Сюжет</h2>
+    <p>
+      <span data-lang="story-ru">В далеком космосе главный герой сталкивается с раздвоением личности, которое влияет на его реальность и выборы. Каждое действие меняет ход истории и судьбу целой планеты.</span>
+      <span data-lang="story-en" hidden>In deep space, the main character faces split personality affecting reality and choices. Every action changes the story and fate of an entire planet.</span>
+    </p>
 
-    <h2>Трейлер</h2>
+    <h2 data-lang="section-trailer">Трейлер</h2>
     <video controls preload="metadata" aria-label="Трейлер игры SplitSoul">
       <source src="trailer-splitsoul.mp4" type="video/mp4" />
-      Ваш браузер не поддерживает видео тег.
+      <span data-lang="video-unsupported-ru">Ваш браузер не поддерживает видео тег.</span>
+      <span data-lang="video-unsupported-en" hidden>Your browser does not support the video tag.</span>
     </video>
 
-    <h2>Фотогалерея</h2>
+    <h2 data-lang="section-gallery">Фотогалерея</h2>
     <div class="gallery" aria-label="Фотогалерея SplitSoul">
       <img src="split1.jpg" alt="Скриншот 1 SplitSoul" />
       <img src="split2.jpg" alt="Скриншот 2 SplitSoul" />
       <img src="split3.jpg" alt="Скриншот 3 SplitSoul" />
       <img src="split4.jpg" alt="Скриншот 4 SplitSoul" />
     </div>
-    <p class="desc-photos">На фото: ключевые моменты игры, разные локации и персонажи.</p>
+    <p class="desc-photos">
+      <span data-lang="photos-desc-ru">На фото: ключевые моменты игры, разные локации и персонажи.</span>
+      <span data-lang="photos-desc-en" hidden>Photos: key moments of the game, various locations, and characters.</span>
+    </p>
 
-    <h2>Новости</h2>
-    <button id="btn-news" class="btn-back" aria-label="Перейти к новостям">Подробнее о новостях</button>
+    <h2 data-lang="section-news">Новости</h2>
+    <button id="btn-news" class="btn-back" aria-label="Перейти к новостям" data-lang="btn-news">Подробнее о новостях</button>
   </section>
 
   <section id="news" tabindex="0" aria-label="Новости игры" hidden>
-    <button class="btn-back" id="btn-back-to-detail" aria-label="Вернуться к информации об игре">⬅ Назад</button>
-    <h1>Новости SplitSoul</h1>
+    <button class="btn-back" id="btn-back-to-detail" aria-label="Вернуться к информации об игре" data-lang="btn-back">⬅️ Назад</button>
+    <h1 data-lang="news-title">Новости SplitSoul</h1>
     <ul aria-label="Список новостей">
-      <li>🆕 Новый трейлер SplitSoul вышел</li>
-<li>⚙️ Обновление баланса и багфиксы</li>
-      <li>📅 Дата релиза объявлена</li>
+      <li>🆕 <span data-lang="news-item1-ru">Новый трейлер SplitSoul вышел</span><span data-lang="news-item1-en" hidden>New SplitSoul trailer released</span></li>
+      <li>⚙️ <span data-lang="news-item2-ru">Обновление баланса и багфиксы</span><span data-lang="news-item2-en" hidden>Balance update and bug fixes</span></li>
+      <li>📅 <span data-lang="news-item3-ru">Дата релиза объявлена</span><span data-lang="news-item3-en" hidden>Release date announced</span></li>
     </ul>
   </section>
 
-  <section id="rights-page" tabindex="0" aria-label="Политика конфиденциальности и уведомление об авторских правах" hidden>
-    <a href="#" class="btn-back" id="btn-back-from-rights" aria-label="Вернуться на главную">⬅ Назад</a>                                        
-    <h1>Политика конфиденциальности</h1>
+<section id="rights-page" tabindex="0" aria-label="Политика конфиденциальности и уведомление об авторских правах" hidden>
+    <a href="#" class="btn-back" id="btn-back-from-rights" aria-label="Вернуться на главную" data-lang="btn-back">⬅️ Назад</a>
+    <h1 data-lang="privacy-title">Политика конфиденциальности</h1>
+    <p><strong data-lang="privacy-update">Последнее обновление: 01 июля 2025</strong></p>
 
-    <p><strong>Последнее обновление: 01 июля 2025</strong></p>
+    <h2 data-lang="privacy-section1">1. Введение</h2>
+    <p data-lang="privacy-intro-ru">
+      <strong>UndyingSoul</strong> («мы», «наш», «нас») уважает вашу конфиденциальность. Эта политика объясняет, как мы собираем, используем и защищаем ваши данные при использовании наших игр, веб-сайтов и сервисов.
+    </p>
+    <p data-lang="privacy-intro-en" hidden>
+      <strong>UndyingSoul</strong> (“we”, “our”, “us”) respects your privacy. This policy explains how we collect, use, and protect your data when you use our games, websites, and services.
+    </p>
 
-    <h2>1. Введение</h2>
-    <p><strong>SpaceGames</strong> («мы», «наш», «нас») уважает вашу конфиденциальность. Эта политика объясняет, как мы собираем, используем и защищаем ваши данные при использовании наших игр, веб-сайтов и сервисов.</p>
-
-    <h2>2. Какие данные мы собираем?</h2>
+    <h2 data-lang="privacy-section2">2. Какие данные мы собираем?</h2>
     <ul>
-      <li><strong>Персональные данные</strong>: имя, email, дата рождения (если требуется для возрастных ограничений).</li>
-      <li><strong>Игровые данные</strong>: прогресс, достижения, внутриигровые покупки.</li>
-      <li><strong>Технические данные</strong>: IP-адрес, тип устройства, операционная система, данные аналитики.</li>
-      <li><strong>Данные платежей</strong>: информация о транзакциях через платёжные системы.</li>
+      <li><strong data-lang="privacy-personal">Персональные данные</strong><span data-lang="privacy-personal-desc-ru">: имя, email, дата рождения (если требуется для возрастных ограничений).</span><span data-lang="privacy-personal-desc-en" hidden>: name, email, date of birth (if required for age restrictions).</span></li>
+      <li><strong data-lang="privacy-game">Игровые данные</strong><span data-lang="privacy-game-desc-ru">: прогресс, достижения, внутриигровые покупки.</span><span data-lang="privacy-game-desc-en" hidden>: progress, achievements, in-game purchases.</span></li>
+      <li><strong data-lang="privacy-tech">Технические данные</strong><span data-lang="privacy-tech-desc-ru">: IP-адрес, тип устройства, операционная система, данные аналитики.</span><span data-lang="privacy-tech-desc-en" hidden>: IP address, device type, operating system, analytics data.</span></li>
+      <li><strong data-lang="privacy-pay">Данные платежей</strong><span data-lang="privacy-pay-desc-ru">: информация о транзакциях через платёжные системы.</span><span data-lang="privacy-pay-desc-en" hidden>: transaction information through payment systems.</span></li>
     </ul>
 
-    <h2>3. Как мы используем ваши данные?</h2>
+    <h2 data-lang="privacy-section3">3. Как мы используем ваши данные?</h2>
     <ul>
-      <li>Для предоставления и улучшения наших игр и сервисов.</li>
-      <li>Для обработки платежей и предотвращения мошенничества.</li>
-      <li>Для связи с вами (техподдержка, обновления, маркетинг, если вы дали согласие).</li>
-      <li>Для аналитики и персонализации игрового опыта.</li>
+      <li data-lang="privacy-use1-ru">Для предоставления и улучшения наших игр и сервисов.</li>
+      <li data-lang="privacy-use2-ru">Для обработки платежей и предотвращения мошенничества.</li>
+      <li data-lang="privacy-use3-ru">Для связи с вами (техподдержка, обновления, маркетинг, если вы дали согласие).</li>
+      <li data-lang="privacy-use4-ru">Для аналитики и персонализации игрового опыта.</li>
+      <li data-lang="privacy-use1-en" hidden>To provide and improve our games and services.</li>
+      <li data-lang="privacy-use2-en" hidden>To process payments and prevent fraud.</li>
+      <li data-lang="privacy-use3-en" hidden>To communicate with you (support, updates, marketing if consented).</li>
+      <li data-lang="privacy-use4-en" hidden>For analytics and personalization of game experience.</li>
     </ul>
 
-    <h2>4. Обмен данными с третьими лицами</h2>
-    <p>Мы не продаем ваши данные, но можем передавать их партнёрам и по требованию закона.</p>
+    <h2 data-lang="privacy-section4">4. Обмен данными с третьими лицами</h2>
+    <p data-lang="privacy-share-ru">Мы не продаем ваши данные, но можем передавать их партнёрам и по требованию закона.</p>
+    <p data-lang="privacy-share-en" hidden>We do not sell your data but may share it with partners and as required by law.</p>
 
-    <h2>5. Ваши права</h2>
+    <h2 data-lang="privacy-section5">5. Ваши права</h2>
     <ul>
-      <li>Запросить доступ, исправление или удаление ваших данных.</li>
-      <li>Отказаться от маркетинговых рассылок.</li>
-      <li>Отозвать согласие на обработку данных (но это может ограничить функционал игры).</li>
+      <li data-lang="privacy-rights1-ru">Запросить доступ, исправление или удаление ваших данных.</li>
+      <li data-lang="privacy-rights2-ru">Отказаться от маркетинговых рассылок.</li>
+      <li data-lang="privacy-rights3-ru">Отозвать согласие на обработку данных (но это может ограничить функционал игры).</li>
+
+<li data-lang="privacy-rights1-en" hidden>Request access, correction, or deletion of your data.</li>
+      <li data-lang="privacy-rights2-en" hidden>Opt out of marketing emails.</li>
+      <li data-lang="privacy-rights3-en" hidden>Withdraw consent for data processing (may limit game functionality).</li>
     </ul>
 
-    <h2>6. Защита данных</h2>
-    <p>Мы используем шифрование (SSL), безопасные серверы и строгие политики доступа.</p>
+    <h2 data-lang="privacy-section6">6. Защита данных</h2>
+    <p data-lang="privacy-protect-ru">Мы используем шифрование (SSL), безопасные серверы и строгие политики доступа.</p>
+    <p data-lang="privacy-protect-en" hidden>We use encryption (SSL), secure servers, and strict access policies.</p>
 
-    <h2>7. Изменения в политике</h2>
-    <p>Мы можем обновлять эту политику. Изменения вступают в силу после публикации на нашем сайте.</p>
+    <h2 data-lang="privacy-section7">7. Изменения в политике</h2>
+    <p data-lang="privacy-changes-ru">Мы можем обновлять эту политику. Изменения вступают в силу после публикации на нашем сайте.</p>
+    <p data-lang="privacy-changes-en" hidden>We may update this policy. Changes take effect after posting on our website.</p>
 
-    <h2>8. Контакты</h2>
-    <p>По вопросам конфиденциальности пишите на: <a href="mailto:privacy@spacegames.com" style="color:#eee; text-decoration: underline;">privacy@spacegames.com</a> или по адресу: г. Москва, ул. Космическая, 42.</p>
+    <h2 data-lang="privacy-section8">8. Контакты</h2>
+    <p data-lang="privacy-contact-ru">По вопросам конфиденциальности пишите на: <a href="mailto:privacy@spacegames.com" style="color:var(--text-color); text-decoration: underline;">privacy@spacegames.com</a> или по адресу: г. Москва, ул. Космическая, 42.</p>
+    <p data-lang="privacy-contact-en" hidden>For privacy questions contact: <a href="mailto:privacy@spacegames.com" style="color:var(--text-color); text-decoration: underline;">privacy@spacegames.com</a> or address: Moscow, Kosmicheskaya St., 42.</p>
 
-    <hr style="border-color:#eee; margin: 20px 0;">
+    <hr style="border-color: var(--border-color); margin: 20px 0;">
 
-    <h1>Авторские права (Copyright Notice)</h1>
+    <h1 data-lang="copyright-title">Авторские права</h1>
+    <p data-lang="copyright-text-ru"> 
+    © 2025 UndyingSoul. Все права защищены.
+    </p>
+    <p data-lang="copyright-text-en" hidden>
+    © 2025 UndyingSoul. All rights reserved.
+    </p>
+    <p data-lang="copyright-text-ru">
+      Все материалы, включая:
+    </p>
+    <p data-lang="copyright-text-en" hidden>
+      All materials, including:
+    </p>
 
-    <p>© 2025 SpaceGames. Все права защищены.</p>
-
-    <p>Все материалы, включая:</p>
     <ul>
-      <li>Код игры, дизайн, графику, анимацию;</li>
-      <li>Аудио, музыку, звуковые эффекты;</li>
-      <li>Тексты, сюжеты, персонажей;</li>
+      <li data-lang="copyright-item1-ru">Код игры, дизайн, графику, анимацию;</li>
+      <li data-lang="copyright-item2-ru">Аудио, музыку, звуковые эффекты;</li>
+      <li data-lang="copyright-item3-ru">Тексты, сюжеты, персонажей;</li>
+
+      <li data-lang="copyright-item1-en" hidden>Game code, design, graphics, animations;</li>
+      <li data-lang="copyright-item2-en" hidden>Audio, music, sound effects;</li>
+      <li data-lang="copyright-item3-en" hidden>Texts, stories, characters;</li>
     </ul>
 
-    <p>являются интеллектуальной собственностью SpaceGames или лицензированы для нас.</p>
+    <p data-lang="copyright-desc-ru">
+      являются интеллектуальной собственностью UndyingSoul или лицензированы для нас.
+    </p>
+    <p data-lang="copyright-desc-en" hidden>
+      are intellectual property of UndyingSoul or licensed to us.
+    </p>
 
-    <p><strong>Запрещено:</strong></p>
+    <p><strong data-lang="copyright-prohib-ru">Запрещено:</strong></p>
     <ul>
-      <li>Копировать, распространять или модифицировать наши игры без разрешения;</li>
-      <li>Использовать наши материалы в коммерческих целях;</li>
-      <li>Создавать фанатские игры на основе нашего IP без лицензии.</li>
+      <li data-lang="copyright-prohib1-ru">Копировать, распространять или модифицировать наши игры без разрешения;</li>
+      <li data-lang="copyright-prohib2-ru">Использовать наши материалы в коммерческих целях;</li>
+      <li data-lang="copyright-prohib3-ru">Создавать фанатские игры на основе нашего IP без лицензии.</li>
+
+      <li data-lang="copyright-prohib1-en" hidden>Copying, distributing, or modifying our games without permission;</li>
+      <li data-lang="copyright-prohib2-en" hidden>Using our materials for commercial purposes;</li>
+      <li data-lang="copyright-prohib3-en" hidden>Creating fan games based on our IP without license.</li>
     </ul>
 
-    <p><strong>Исключения:</strong></p>
+    <p><strong data-lang="copyright-except-ru">Исключения:</strong></p>
     <ul>
-      <li>Допускается цитирование с указанием авторства (для обзоров, новостей);</li>
-      <li>Моды/фанарт — только с разрешения и без монетизации.</li>
+      <li data-lang="copyright-except1-ru">Допускается цитирование с указанием авторства (для обзоров, новостей);</li>
+      <li data-lang="copyright-except2-ru">Моды/фанарт — только с разрешения и без монетизации.</li>
+
+      <li data-lang="copyright-except1-en" hidden>Quoting with attribution allowed (for reviews, news);</li>
+      <li data-lang="copyright-except2-en" hidden>Mods/fan art — only with permission and no monetization.</li>
     </ul>
 
-    <p>По вопросам лицензирования обращайтесь: <a href="mailto:license@spacegames.com" style="color:#eee; text-decoration: underline;">license@spacegames.com</a>.</p>
+<p data-lang="copyright-contact-ru">
+      По вопросам лицензирования обращайтесь: <a href="mailto:license@spacegames.com" style="color:var(--text-color); text-decoration: underline;">license@spacegames.com</a>.
+    </p>
+    <p data-lang="copyright-contact-en" hidden>
+      For licensing inquiries contact: <a href="mailto:license@spacegames.com" style="color:var(--text-color); text-decoration: underline;">license@spacegames.com</a>.
+    </p>
   </section>
-
 </main>
+<script>
+  const langButton = document.getElementById('toggle-lang');
+  let currentLang = 'ru';
 
+  const langMap = {
+    'btn-back': { ru: '⬅️ Назад', en: '⬅️ Back' },
+    'btn-details': { ru: 'Подробнее', en: 'More details' },
+    'btn-news': { ru: 'Подробнее о новостях', en: 'More about the news' },
+    'btn-theme': { ru: 'Светлая тема', en: 'Light Theme' },
+    'btn-lang': { ru: 'English', en: 'Русский' },
+    'section-story': { ru: 'Сюжет', en: 'Story' },
+    'section-trailer': { ru: 'Трейлер', en: 'Trailer' },
+    'section-gallery': { ru: 'Фотогалерея', en: 'Gallery' },
+    'section-news': { ru: 'Новости', en: 'News' },
+    'news-title': { ru: 'Новости SplitSoul', en: 'SplitSoul News' },
+    'game-title': { ru: 'SplitSoul', en: 'SplitSoul' },
+    'rights-text': {
+      ru: 'Все права защищены © 2025',
+      en: 'All rights reserved © 2025'
+    },
+    'boosty-link-text': {
+      ru: 'Поддержать на Boosty 🚀',
+      en: 'Support us on Boosty 🚀'
+    },
+    'tg-link-text': {
+      ru: 'Наш Telegram 📲',
+      en: 'Our Telegram 📲'
+    },
+
+    // Политика и копирайт
+    'privacy-title': { ru: 'Политика конфиденциальности', en: 'Privacy Policy' },
+    'privacy-update': { ru: 'Последнее обновление: 01 июля 2025', en: 'Last updated: July 1, 2025' },
+    'privacy-section1': { ru: '1. Введение', en: '1. Introduction' },
+    'privacy-section2': { ru: '2. Какие данные мы собираем?', en: '2. What data do we collect?' },
+    'privacy-section3': { ru: '3. Как мы используем ваши данные?', en: '3. How we use your data?' },
+    'privacy-section4': { ru: '4. Обмен данными с третьими лицами', en: '4. Data sharing' },
+    'privacy-section5': { ru: '5. Ваши права', en: '5. Your rights' },
+    'privacy-section6': { ru: '6. Защита данных', en: '6. Data protection' },
+    'privacy-section7': { ru: '7. Изменения в политике', en: '7. Changes' },
+    'privacy-section8': { ru: '8. Контакты', en: '8. Contact' },
+    'copyright-title': { ru: 'Авторские права', en: 'Copyright Notice' },
+    'copyright-desc-ru': {
+      ru: 'являются интеллектуальной собственностью UndyingSoul или лицензированы для нас.',
+      en: 'are intellectual property of UndyingSoul or licensed to us.'
+    },
+    'copyright-prohib-ru': {
+      ru: 'Запрещено:',
+      en: 'Prohibited:'
+    },
+    'copyright-except-ru': {
+      ru: 'Исключения:',
+      en: 'Exceptions:'
+    }
+  };
+
+  function switchLanguage() {
+    currentLang = currentLang === 'ru' ? 'en' : 'ru';
+
+    document.querySelectorAll('[data-lang]').forEach(el => {
+      const key = el.getAttribute('data-lang');
+
+      if (langMap[key]) {
+        el.textContent = langMap[key][currentLang];
+      } else {
+        if (key.endsWith('-ru') || key.endsWith('-en')) {
+          const isRU = key.endsWith('-ru');
+          el.hidden = currentLang === 'ru' ? !isRU : isRU;
+        }
+      }
+    });
+
+    // Обновление текста кнопки смены языка
+    langButton.textContent = langMap['btn-lang'][currentLang];
+  }
+
+  langButton.addEventListener('click', switchLanguage);
+</script>
+
+<!-- ✅ Футер с кликабельной ссылкой -->
 <footer class="footer-glow" role="contentinfo">
   <div class="rights-box" tabindex="0" role="button" aria-pressed="false" id="rights-link">
-    © 2025 SpaceGames. Все права защищены.
+    
+    <a href="#rights-page" class="btn-footer" data-lang="rights-text" aria-label="Права и копирайт">Все права защищены © 2025</a>
   </div>
   <div class="support-buttons">
-    <a href="https://boosty.to/spacegamessg" target="_blank" rel="noopener noreferrer" class="btn-footer" aria-label="Поддержать на Boosty">Поддержать на Boosty 🚀</a>
-    <a href="https://t.me/SspaceGames" target="_blank" rel="noopener noreferrer" class="btn-footer" aria-label="Перейти в Telegram канал">Наш Telegram 📲</a>
+    <a href="https://boosty.to/spacegamessg" target="_blank" rel="noopener noreferrer" class="btn-footer" aria-label="Поддержать на Boosty" data-lang="boosty-link-text">Поддержать на Boosty 🚀</a>
+    <a href="https://t.me/SspaceGames" target="_blank" rel="noopener noreferrer" class="btn-footer" aria-label="Перейти в Telegram канал" data-lang="tg-link-text">Наш Telegram 📲</a>
   </div>
 </footer>
 
 <script>
-  // Получаем элементы секций
+  // Секция переключения видимости между страницами
   const home = document.getElementById('home');
   const gameDetail = document.getElementById('game-detail');
   const news = document.getElementById('news');
   const rightsPage = document.getElementById('rights-page');
 
-  // Кнопки
+  // Кнопки навигации
   const btnDetails = document.getElementById('btn-details');
   const btnBackToHome = document.getElementById('btn-back-to-home');
   const btnNews = document.getElementById('btn-news');
@@ -520,7 +709,6 @@
   const rightsLink = document.getElementById('rights-link');
   const btnBackFromRights = document.getElementById('btn-back-from-rights');
 
-  // Показать подробную информацию об игре
   btnDetails.addEventListener('click', () => {
     home.hidden = true;
     gameDetail.hidden = false;
@@ -529,7 +717,6 @@
     gameDetail.focus();
   });
 
-  // Вернуться с подробной информации на главную
   btnBackToHome.addEventListener('click', () => {
     home.hidden = false;
     gameDetail.hidden = true;
@@ -538,7 +725,6 @@
     home.focus();
   });
 
-  // Показать новости из подробной информации
   btnNews.addEventListener('click', () => {
     home.hidden = true;
     gameDetail.hidden = true;
@@ -547,7 +733,6 @@
     news.focus();
   });
 
-  // Вернуться с новостей к подробной информации
   btnBackToDetail.addEventListener('click', () => {
     home.hidden = true;
     gameDetail.hidden = false;
@@ -556,7 +741,6 @@
     gameDetail.focus();
   });
 
-  // Показать страницу прав (политики)
   rightsLink.addEventListener('click', () => {
     home.hidden = true;
     gameDetail.hidden = true;
@@ -565,8 +749,6 @@
     rightsLink.setAttribute('aria-pressed', 'true');
     rightsPage.focus();
   });
-
-  // Вернуться со страницы прав на главную
   btnBackFromRights.addEventListener('click', (e) => {
     e.preventDefault();
     rightsPage.hidden = true;
@@ -576,7 +758,93 @@
     rightsLink.setAttribute('aria-pressed', 'false');
     home.focus();
   });
+
+  // Переключение темы (тёмная / светлая)
+  const toggleThemeBtn = document.getElementById('toggle-theme');
+  toggleThemeBtn.addEventListener('click', () => {
+    if (document.body.classList.contains('dark')) {
+      document.body.classList.replace('dark', 'light');
+      toggleThemeBtn.textContent = 'Dark Theme';
+      toggleThemeBtn.setAttribute('aria-pressed', 'true');
+    } else {
+      document.body.classList.replace('light', 'dark');
+      toggleThemeBtn.textContent = 'Light Theme';
+      toggleThemeBtn.setAttribute('aria-pressed', 'false');
+    }
+  });
+
+// Переключение языка (русский / английский)
+  const toggleLangBtn = document.getElementById('toggle-lang');
+  toggleLangBtn.addEventListener('click', () => {
+    const isEnglish = toggleLangBtn.getAttribute('aria-pressed') === 'true';
+    if (isEnglish) {
+      // Переключаем на русский
+      toggleLangBtn.textContent = 'English';
+      toggleLangBtn.setAttribute('aria-pressed', 'false');
+      toggleLangBtn.setAttribute('aria-label', 'Switch to English');
+      // Показать русские элементы, скрыть английские
+      document.querySelectorAll('[data-lang$="-ru"]').forEach(el => el.hidden = false);
+      document.querySelectorAll('[data-lang$="-en"]').forEach(el => el.hidden = true);
+    } else {
+      // Переключаем на английский
+      toggleLangBtn.textContent = 'Русский';
+      toggleLangBtn.setAttribute('aria-pressed', 'true');
+      toggleLangBtn.setAttribute('aria-label', 'Переключить на русский');
+      // Показать английские элементы, скрыть русские
+      document.querySelectorAll('[data-lang$="-ru"]').forEach(el => el.hidden = true);
+      document.querySelectorAll('[data-lang$="-en"]').forEach(el => el.hidden = false);
+    }
+  });
+
+  // Инициализация темы и языка по умолчанию
+  document.body.classList.add('dark');  // стартовая тема — тёмная
+  toggleThemeBtn.textContent = 'Light Theme';
+  toggleThemeBtn.setAttribute('aria-pressed', 'false');
+
+  toggleLangBtn.textContent = 'English';
+  toggleLangBtn.setAttribute('aria-pressed', 'false');
+  toggleLangBtn.setAttribute('aria-label', 'Switch to English');
+
+  // При загрузке показать русский
+  document.querySelectorAll('[data-lang$="-ru"]').forEach(el => el.hidden = false);
+  document.querySelectorAll('[data-lang$="-en"]').forEach(el => el.hidden = true);
 </script>
 
-</body>
-</html>
+<style>
+  /* Светлая тема */
+  body.light {
+    --bg-color: #fff;
+    --text-color: #222;
+    --border-color: #444;
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+  body.light header.glow-box,
+  body.light .about-company,
+  body.light .game-card,
+  body.light #game-detail .about-company-small,
+  body.light footer.footer-glow,
+  body.light #rights-page {
+    background: #f9f9f9;
+    color: var(--text-color);
+    border-color: var(--border-color);
+    box-shadow: 0 0 10px 1px rgba(0,0,0,0.1);
+  }
+  body.light .game-card button,
+  body.light .btn-back,
+  body.light footer .btn-footer {
+    border-color: var(--border-color);
+    color: var(--text-color);
+    background: transparent;
+  }
+  body.light .game-card button:hover,
+  body.light .btn-back:hover,
+  body.light footer .btn-footer:hover,
+  body.light footer .btn-footer:focus {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+  }
+  body.light a {
+    color: var(--text-color);
+  }
+</style>
